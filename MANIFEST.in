@@ -1,0 +1,1 @@
+recursive-include vnpy_lstar *.dll *.so *.pyd *.h *.cpp *.lib
