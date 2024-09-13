@@ -17,7 +17,7 @@ def get_ext_modules() -> list:
         define_macros=[],
         undef_macros=[],
         library_dirs=["vnpy_lstar/api/libs", "vnpy_lstar/api"],
-        libraries=["thostmduserapi_se", "thosttraderapi_se"],
+        libraries=["thosttraderapi_se"],
         extra_compile_args=extra_compile_flags,
         extra_link_args=extra_link_args,
         runtime_library_dirs=runtime_library_dirs,

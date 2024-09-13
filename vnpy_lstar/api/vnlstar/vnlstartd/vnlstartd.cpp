@@ -2347,8 +2347,6 @@ void TdApi::OnRtnChangeAccountByBank(CThostFtdcChangeAccountField *pChangeAccoun
 	this->task_queue.push(task);
 };
 
-
-
 ///-------------------------------------------------------------------------------------
 ///工作线程从队列中取出数据，转化为python对象后，进行推送
 ///-------------------------------------------------------------------------------------
@@ -3112,8 +3110,6 @@ void TdApi::processTask()
 				this->processRtnChangeAccountByBank(&task);
 				break;
 			}
-
-
             };
         }
     }
@@ -3930,8 +3926,6 @@ void TdApi::processRspCombActionInsert(Task *task)
 		data["IPAddress"] = toUtf(task_data->IPAddress);
 		data["MacAddress"] = toUtf(task_data->MacAddress);
 		data["InvestUnitID"] = toUtf(task_data->InvestUnitID);
-		data["FrontID"] = task_data->FrontID;
-		data["SessionID"] = task_data->SessionID;
 		delete task_data;
 	}
 	dict error;
@@ -4133,8 +4127,6 @@ void TdApi::processRspQryInvestorPosition(Task *task)
 		data["YdStrikeFrozen"] = task_data->YdStrikeFrozen;
 		data["InvestUnitID"] = toUtf(task_data->InvestUnitID);
 		data["PositionCostOffset"] = task_data->PositionCostOffset;
-		data["TasPosition"] = task_data->TasPosition;
-		data["TasPositionCost"] = task_data->TasPositionCost;
 		delete task_data;
 	}
 	dict error;
@@ -4606,7 +4598,6 @@ void TdApi::processRspQryInvestorPositionDetail(Task *task)
 		data["CloseAmount"] = task_data->CloseAmount;
 		data["TimeFirstVolume"] = task_data->TimeFirstVolume;
 		data["InvestUnitID"] = toUtf(task_data->InvestUnitID);
-		data["SpecPosiType"] = task_data->SpecPosiType;
 		delete task_data;
 	}
 	dict error;
@@ -6645,8 +6636,6 @@ void TdApi::processErrRtnCombActionInsert(Task *task)
 		data["IPAddress"] = toUtf(task_data->IPAddress);
 		data["MacAddress"] = toUtf(task_data->MacAddress);
 		data["InvestUnitID"] = toUtf(task_data->InvestUnitID);
-		data["FrontID"] = task_data->FrontID;
-		data["SessionID"] = task_data->SessionID;
 		delete task_data;
 	}
 	dict error;
@@ -8247,8 +8236,6 @@ void TdApi::processRtnChangeAccountByBank(Task *task)
 	this->onRtnChangeAccountByBank(data);
 };
 
-
-
 ///-------------------------------------------------------------------------------------
 ///主动函数
 ///-------------------------------------------------------------------------------------
@@ -8872,8 +8859,6 @@ int TdApi::reqCombActionInsert(const dict &req, int reqid)
 	getString(req, "IPAddress", myreq.IPAddress);
 	getString(req, "MacAddress", myreq.MacAddress);
 	getString(req, "InvestUnitID", myreq.InvestUnitID);
-	getInt(req, "FrontID", &myreq.FrontID);
-	getInt(req, "SessionID", &myreq.SessionID);
 	int i = this->api->ReqCombActionInsert(&myreq, reqid);
 	return i;
 };
@@ -9648,8 +9633,6 @@ int TdApi::reqQueryBankAccountMoneyByFuture(const dict &req, int reqid)
 	int i = this->api->ReqQueryBankAccountMoneyByFuture(&myreq, reqid);
 	return i;
 };
-
-
 
 
 ///-------------------------------------------------------------------------------------
@@ -11160,10 +11143,6 @@ public:
 			cout << e.what() << endl;
 		}
 	};
-
-
-
-
 };
 
 

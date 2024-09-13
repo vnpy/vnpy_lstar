@@ -1064,8 +1064,6 @@ public:
 
 	virtual void onRtnChangeAccountByBank(const dict &data) {};
 
-
-
     //-------------------------------------------------------------------------------------
     //req:主动函数的请求字典
     //-------------------------------------------------------------------------------------
@@ -1251,6 +1249,4 @@ public:
 	int reqFromFutureToBankByFuture(const dict &req, int reqid);
 
 	int reqQueryBankAccountMoneyByFuture(const dict &req, int reqid);
-
-
 };
