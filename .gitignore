@@ -43,4 +43,3 @@ dist/
 build/
 *.egg-info/
 .vscode/settings.json
-*.pyd

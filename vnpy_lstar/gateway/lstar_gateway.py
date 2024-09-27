@@ -28,10 +28,10 @@ from vnpy.trader.object import (
 )
 from vnpy.trader.utility import get_folder_path, ZoneInfo
 from vnpy.trader.event import EVENT_TIMER
-from vnpy_ctp.api import MdApi
 
 from ..api import (
     TdApi,
+    MdApi,
     THOST_FTDC_OST_NoTradeQueueing,
     THOST_FTDC_OST_PartTradedQueueing,
     THOST_FTDC_OST_PartTradedNotQueueing,
@@ -140,13 +140,15 @@ class LstarGateway(BaseGateway):
     default_name: str = "LSTAR"
 
     default_setting: Dict[str, str] = {
-        "用户名": "",
-        "密码": "",
-        "经纪商代码": "",
+        "交易用户名": "",
+        "交易密码": "",
         "交易服务器": "",
-        "行情服务器": "",
+        "经纪商代码": "",
         "产品名称": "",
-        "授权编码": ""
+        "授权编码": "",
+        "行情用户名": "",
+        "行情密码": "",
+        "行情服务器": "",
     }
 
     exchanges: List[str] = list(EXCHANGE_LSTAR2VT.values())
@@ -160,21 +162,24 @@ class LstarGateway(BaseGateway):
 
     def connect(self, setting: dict) -> None:
         """连接交易接口"""
-        userid: str = setting["用户名"]
-        password: str = setting["密码"]
+        td_userid: str = setting["交易用户名"]
+        td_password: str = setting["交易密码"]
         brokerid: str = setting["经纪商代码"]
         td_address: str = setting["交易服务器"]
-        md_address: str = setting["行情服务器"]
         appid: str = setting["产品名称"]
         auth_code: str = setting["授权编码"]
+
+        md_userid: str = setting["行情用户名"]
+        md_password: str = setting["行情密码"]
+        md_address: str = setting["行情服务器"]
 
         if not td_address.startswith("tcp://"):
             td_address = "tcp://" + td_address
         if not md_address.startswith("tcp://"):
             md_address = "tcp://" + md_address
 
-        self.td_api.connect(td_address, userid, password, brokerid, auth_code, appid)
-        self.md_api.connect(md_address, userid, password, brokerid)
+        self.td_api.connect(td_address, td_userid, td_password, brokerid, auth_code, appid)
+        self.md_api.connect(md_address, md_userid, md_password, brokerid)
 
         self.init_query()
 
