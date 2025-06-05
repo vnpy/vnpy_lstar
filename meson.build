@@ -92,6 +92,8 @@ endforeach
 # 安装API动态库文件
 api_libs = [
   'vnpy_lstar/api/thosttraderapi_se.dll',
+  'vnpy_lstar/api/thostmduserapi_se.dll',
+  'vnpy_lstar/api/WinDataCollect.dll',
   'vnpy_lstar/api/vnctpmd.cp313-win_amd64.pyd',
 ]
 
