@@ -27,6 +27,7 @@ from vnpy.trader.object import (
 )
 from vnpy.trader.utility import get_folder_path, ZoneInfo
 from vnpy.trader.event import EVENT_TIMER
+from vnpy.event import Event
 
 from ..api import (
     TdApi,
@@ -88,7 +89,7 @@ ORDERTYPE_VT2LSTAR: dict[OrderType, tuple] = {
     OrderType.FAK: (THOST_FTDC_OPT_LimitPrice, THOST_FTDC_TC_IOC, THOST_FTDC_VC_AV),
     OrderType.FOK: (THOST_FTDC_OPT_LimitPrice, THOST_FTDC_TC_IOC, THOST_FTDC_VC_CV),
 }
-ORDERTYPE_LSTAR2VT: dict[str, OrderType] = {v: k for k, v in ORDERTYPE_VT2LSTAR.items()}
+ORDERTYPE_LSTAR2VT: dict[tuple, OrderType] = {v: k for k, v in ORDERTYPE_VT2LSTAR.items()}
 
 # 开平方向映射
 OFFSET_VT2LSTAR: dict[Offset, str] = {
@@ -159,6 +160,8 @@ class LstarGateway(BaseGateway):
         self.td_api: LstarTdApi = LstarTdApi(self)
         self.md_api: LstarMdApi = LstarMdApi(self)
 
+        self.count: int = 0
+
     def connect(self, setting: dict) -> None:
         """连接交易接口"""
         td_userid: str = setting["交易用户名"]
@@ -211,10 +214,10 @@ class LstarGateway(BaseGateway):
         """输出错误信息日志"""
         error_id: int = error["ErrorID"]
         error_msg: str = error["ErrorMsg"]
-        msg: str = f"{msg}，代码：{error_id}，信息：{error_msg}"
+        msg = f"{msg}，代码：{error_id}，信息：{error_msg}"
         self.write_log(msg)
 
-    def process_timer_event(self, event) -> None:
+    def process_timer_event(self, event: Event) -> None:
         """定时事件处理"""
         self.count += 1
         if self.count < 2:
@@ -229,7 +232,7 @@ class LstarGateway(BaseGateway):
 
     def init_query(self) -> None:
         """初始化查询任务"""
-        self.count: int = 0
+        self.count = 0
         self.query_functions: list = [self.query_account, self.query_position]
         self.event_engine.register(EVENT_TIMER, self.process_timer_event)
 
@@ -304,11 +307,11 @@ class LstarMdApi(MdApi):
         if not data["ActionDay"] or contract.exchange == Exchange.DCE:
             date_str: str = self.current_date
         else:
-            date_str: str = data["ActionDay"]
+            date_str = data["ActionDay"]
 
         timestamp: str = f"{date_str} {data['UpdateTime']}.{int(data['UpdateMillisec']/100)}"
         dt: datetime = datetime.strptime(timestamp, "%Y%m%d %H:%M:%S.%f")
-        dt: datetime = dt.replace(tzinfo=CHINA_TZ)
+        dt = dt.replace(tzinfo=CHINA_TZ)
 
         tick: TickData = TickData(
             symbol=symbol,
@@ -656,7 +659,7 @@ class LstarTdApi(TdApi):
 
         timestamp: str = f"{data['InsertDate']} {data['InsertTime']}"
         dt: datetime = datetime.strptime(timestamp, "%Y%m%d %H:%M:%S")
-        dt: datetime = dt.replace(tzinfo=CHINA_TZ)
+        dt = dt.replace(tzinfo=CHINA_TZ)
 
         tp: tuple = (data["OrderPriceType"], data["TimeCondition"], data["VolumeCondition"])
 
@@ -691,7 +694,7 @@ class LstarTdApi(TdApi):
 
         timestamp: str = f"{data['TradeDate']} {data['TradeTime']}"
         dt: datetime = datetime.strptime(timestamp, "%Y%m%d %H:%M:%S")
-        dt: datetime = dt.replace(tzinfo=CHINA_TZ)
+        dt = dt.replace(tzinfo=CHINA_TZ)
 
         trade: TradeData = TradeData(
             symbol=symbol,
@@ -812,7 +815,8 @@ class LstarTdApi(TdApi):
         order: OrderData = req.create_order_data(orderid, self.gateway_name)
         self.gateway.on_order(order)
 
-        return order.vt_orderid
+        vt_orderid: str = order.vt_orderid
+        return vt_orderid
 
     def cancel_order(self, req: CancelRequest) -> None:
         """委托撤单"""
