@@ -5,7 +5,7 @@ from vnpy.trader.ui import MainWindow, create_qapp
 from vnpy_lstar import LstarGateway
 
 
-def main():
+def main() -> None:
     """主入口函数"""
     qapp = create_qapp()
 
