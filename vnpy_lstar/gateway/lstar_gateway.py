@@ -1,3 +1,5 @@
+"""实现利星资管交易接口。"""
+
 import sys
 from datetime import datetime
 from time import sleep
@@ -238,7 +240,7 @@ class LstarGateway(BaseGateway):
 
 
 class LstarMdApi(MdApi):
-    """"""
+    """对接利星资管的行情接口。"""
 
     def __init__(self, gateway: LstarGateway) -> None:
         """构造函数"""
@@ -405,7 +407,7 @@ class LstarMdApi(MdApi):
 
 
 class LstarTdApi(TdApi):
-    """"""
+    """对接利星资管的交易接口。"""
 
     def __init__(self, gateway: LstarGateway) -> None:
         """构造函数"""
