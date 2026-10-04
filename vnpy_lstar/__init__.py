@@ -22,7 +22,7 @@
 """VeighNa 利星资管交易接口。"""
 
 
-import importlib_metadata
+from importlib import metadata
 
 from .gateway import LstarGateway
 
@@ -30,6 +30,6 @@ from .gateway import LstarGateway
 __all__ = ["LstarGateway"]
 
 try:
-    __version__ = importlib_metadata.version("vnpy_lstar")
-except importlib_metadata.PackageNotFoundError:
+    __version__ = metadata.version("vnpy_lstar")
+except metadata.PackageNotFoundError:
     __version__ = "dev"
