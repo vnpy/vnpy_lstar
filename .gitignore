@@ -44,3 +44,8 @@ build/
 *.egg-info/
 .vscode/settings.json
 vnpy_lstar/api/vnlstartd.cp310-win_amd64.pyd
+
+# Type checker / linter / test caches
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
