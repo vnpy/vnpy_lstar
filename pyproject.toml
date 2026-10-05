@@ -1,6 +1,6 @@
 [project]
 name = "vnpy_lstar"
-version = "6.3.15.1"
+version = "6.3.15.2"
 description = "L-Star gateway for vn.py quant trading framework."
 readme = "README.md"
 license = {text = "MIT"}

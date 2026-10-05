@@ -1,7 +1,7 @@
 project(
   'vnpy_lstar',
   'cpp',
-  version: '6.3.15.1',
+  version: '6.3.15.2',
   license: 'MIT',
   meson_version: '>=1.7.0',
   default_options: [
